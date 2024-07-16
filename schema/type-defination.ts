@@ -4,12 +4,12 @@ export const typeDefs = `#graphql
   # This "UER, POST" type defines the queryable fields for every UER, POST in our data source.
   type USER {
     id: ID!,
-    firstName: String,
+    firstName: String!,
     lastName: String!,
     maidenName: String,
     age: Int,
     gender: String,
-    email: String,
+    email: String!,
     phone: String,
     username: String,
     password: String,
@@ -18,7 +18,9 @@ export const typeDefs = `#graphql
     nationality: Nationality,
     role: String,
     posts: [POST],
-    friends: [USER]
+    friends: [USER],
+    favouriteMovies: [MOVIE],
+    favouritePosts: [POST]
   }
 
   interface TReacttion {
@@ -41,12 +43,88 @@ export const typeDefs = `#graphql
     userId: USER
   }
 
+  type MOVIE {
+    id: ID!,
+    title: String,
+    year: String,
+    images: [String],
+    released: String,
+    director: String,
+    country: String
+  }
+
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
     users: [USER!]!
     posts: [POST!]!
-    user(id: ID!): USER
+    user(id: ID!, postIds: [Int]): USER
+    post(title: String!): POST,
+    movies: [MOVIE!],
+    movie(title: String!): MOVIE
+  }
+  
+  input CreateUserType {
+    firstName: String!,
+    lastName: String!,
+    maidenName: String,
+    age: Int,
+    gender: String,
+    email: String!,
+    phone: String,
+    username: String,
+    password: String,
+    birthDate: String,
+    image: String,
+    nationality: Nationality = Indian,
+    role: String = "anonymous"
+  }
+  input UpdateUserType {
+    id: ID!,
+    firstName: String,
+    lastName: String,
+    maidenName: String,
+    age: Int,
+    gender: String,
+    email: String,
+    phone: String,
+    username: String,
+    password: String,
+    birthDate: String,
+    image: String,
+    nationality: Nationality = Indian,
+    role: String = "anonymous"
+  }
+  input DeleteUserType {
+    id: ID!
+  }
+
+  type Mutation {
+    createUser(input: CreateUserType): USER
+    updateUser(input: UpdateUserType): USER
+    deleteUser(input: DeleteUserType): USER
   }
 `
+
+// createUser(firstName: String!, lastName: String!, email: String!): USER
+//createUser(user: User!): USER
+
+/*
+Mutation: {
+  login: async (_, { email }, { dataSources }) => {
+    const user = await dataSources.userAPI.findOrCreateUser({ email });
+    if (user) {
+      user.token = Buffer.from(email).toString('base64');
+      return user;
+    }
+  },
+}*/
+
+/*
+mutation CreateUser($input: CreateUserType) {
+  createUser(input: $input) {
+    firstName
+  }
+}
+  */
