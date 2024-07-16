@@ -40,7 +40,7 @@ export const resolvers = {
   },
   Mutation: {
     createUser: (parent: any, args: any) => {
-      const newUser = args.input
+      const newUser = { ...args.input, id: users.length + 1 }
       users.push(newUser)
       return users[users.length - 1]
     },
