@@ -8,8 +8,8 @@ export const resolverLogPlugin = {
   // Fires whenever a GraphQL request is received from a client.
   async requestDidStart(requestContext: GraphQLRequestContext) {
     //console.log('Get query and variables!')
-    // console.log('Request started! Query:\n' + requestContext.request.query)
-    // console.log('Request started! Query:\n' + JSON.stringify(requestContext.request.variables));
+    //console.log('Request started! Query:\n' + requestContext.request.query)
+    //console.log('Request started! Query:\n' + JSON.stringify(requestContext.request.variables))
 
     return {
       // Fires whenever Apollo Server will parse a GraphQL
